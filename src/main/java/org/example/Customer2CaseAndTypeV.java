@@ -53,6 +53,7 @@ public class Customer2CaseAndTypeV {
                 item.put("name", AttributeValue.builder().s(rs.getString("custName")).build());
                 item.put("strasse", AttributeValue.builder().s(rs.getString("custStrasse")).build());
                 item.put("ort", AttributeValue.builder().s(rs.getString("custOrt")).build());
+                item.put("plz", AttributeValue.builder().s(rs.getString("custPLZ")).build());
                 item.put("land", AttributeValue.builder().s(rs.getString("custLand")).build());
                 item.put("caseTypeName", AttributeValue.builder().s(rs.getString("custCaseTypeName")).build());
                 item.put("caseTypeBeschreibung", AttributeValue.builder().s(rs.getString("custCaseTypeBeschreibung")).build());

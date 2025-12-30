@@ -5,11 +5,14 @@ import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ZSTransactionUpdate {
-
+    static DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    static DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static void main(String[] args) {
         select();
     }
@@ -31,9 +34,11 @@ public class ZSTransactionUpdate {
                 .region(software.amazon.awssdk.regions.Region.EU_CENTRAL_1)
                 .build();
 
-        String sql = "SELECT transactionId, customer2CaseAndTypeId, lieferAbholdatum, lieferscheinNr, " +
+        String sql = "SELECT transactionId, tr.customer2CaseAndTypeId, lieferAbholdatum, lieferscheinNr, " +
                 "abholscheinNr, auftragsNrZs, auftragsNrKunde, rechnungsNrZS, buchungsinfo, lieferungZS, abholungZS, saldo, " +
-                "creationDate, createdBy, saldenbestaetigungsDatum, saldenbestaetigungsPerson, bemerkung FROM ZSTransaction";
+                "creationDate, createdBy, saldenbestaetigungsDatum, saldenbestaetigungsPerson, bemerkung , custName, custCaseTypeBeschreibung " +
+                " from ZSTransaction tr, CustomerCaseAndType_V cct_v  " +
+                " where tr.customer2CaseAndTypeId = cct_v.customer2CaseAndTypeId ";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
@@ -44,7 +49,7 @@ public class ZSTransactionUpdate {
 
                 putItem(item, rs, "transactionId", "STRING");
                 putItem(item, rs, "customer2CaseAndTypeId", "STRING");
-                putItem(item, rs, "lieferAbholdatum", "STRING");
+                putItem(item, rs, "lieferAbholdatum", "DATE");
                 putItem(item, rs, "lieferscheinNr", "STRING");
                 putItem(item, rs, "abholscheinNr", "STRING");
                 putItem(item, rs, "auftragsNrZs", "STRING");
@@ -59,6 +64,9 @@ public class ZSTransactionUpdate {
                 putItem(item, rs, "saldenbestaetigungsDatum", "STRING");
                 putItem(item, rs, "saldenbestaetigungsPerson", "STRING");
                 putItem(item, rs, "bemerkung", "STRING");
+                putItem(item, rs, "bemerkung", "STRING");
+                putItem(item, rs, "custName", "STRING");
+                putItem(item, rs, "custCaseTypeBeschreibung", "STRING");
 
                 PutItemRequest request = PutItemRequest.builder()
                         .tableName("ZSTransaction")
@@ -80,6 +88,10 @@ public class ZSTransactionUpdate {
         if (val == null || val.isEmpty()) return;
 
         switch (type) {
+            case "DATE":
+                LocalDate date = LocalDate.parse(val, inputFormat);
+                item.put(col, AttributeValue.builder().s(date.format(outputFormat)).build());
+                break;
             case "STRING":
                 item.put(col, AttributeValue.builder().s(val).build());
                 break;
