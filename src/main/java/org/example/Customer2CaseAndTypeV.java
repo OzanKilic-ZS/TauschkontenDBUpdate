@@ -44,7 +44,7 @@ public class Customer2CaseAndTypeV {
             while (rs.next()) {
                 Map<String, AttributeValue> item = new HashMap<>();
                 String pk = "case#" + rs.getString("customerCaseId");
-                String sk = "customer#" + rs.getString("customerId") + "caseType#" + rs.getString("customerCaseTypeId");
+                String sk = "customer#" + rs.getString("customerId") + "#caseType#" + rs.getString("customerCaseTypeId");
 
                 item.put("pk", AttributeValue.builder().s(pk).build());
                 item.put("sk", AttributeValue.builder().s(sk).build());
