@@ -5,6 +5,8 @@ import software.amazon.awssdk.services.dynamodb.model.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.sql.Statement;
@@ -35,7 +37,7 @@ public class Customer2CaseAndTypeV {
 
         String sql = "select customerCaseId, customerId, customerCaseTypeId, customer2CaseAndTypeId, " +
                 "custName, custStrasse, custPLZ, custOrt, custLand, " +
-                "custCaseName, custCaseTypeName, custCaseTypeBeschreibung from CustomerCaseAndType_V";
+                "custCaseName, custCaseTypeName, custCaseTypeBeschreibung, Notizen from CustomerCaseAndType_V";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
@@ -57,6 +59,9 @@ public class Customer2CaseAndTypeV {
                 item.put("land", AttributeValue.builder().s(rs.getString("custLand")).build());
                 item.put("caseTypeName", AttributeValue.builder().s(rs.getString("custCaseTypeName")).build());
                 item.put("caseTypeBeschreibung", AttributeValue.builder().s(rs.getString("custCaseTypeBeschreibung")).build());
+                item.put("note", AttributeValue.builder().s(rs.getString("notizen")).build());
+                item.put("noteLastChanged", AttributeValue.builder().s(LocalDateTime.now().toString()).build());
+                item.put("noteChangedBy", AttributeValue.builder().s("technik@zs-paletten.de").build());
 
                 PutItemRequest request = PutItemRequest.builder()
                         .tableName("Customer2CaseAndType")
