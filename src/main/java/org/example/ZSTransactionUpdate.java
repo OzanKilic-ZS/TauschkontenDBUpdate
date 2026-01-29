@@ -35,10 +35,13 @@ public class ZSTransactionUpdate {
                 .build();
 
         String sql = "SELECT transactionId, tr.customer2CaseAndTypeId, lieferAbholdatum, lieferscheinNr, " +
-                "abholscheinNr, auftragsNrZs, auftragsNrKunde, rechnungsNrZS, buchungsinfo, lieferungZS, abholungZS, saldo, " +
-                "creationDate, createdBy, saldenbestaetigungsDatum, saldenbestaetigungsPerson, bemerkung , custName, custCaseTypeBeschreibung " +
-                " from ZSTransaction tr, CustomerCaseAndType_V cct_v  " +
-                " where tr.customer2CaseAndTypeId = cct_v.customer2CaseAndTypeId ";
+                // "abholscheinNr, auftragsNrZs, auftragsNrKunde, rechnungsNrZS, buchungsinfo, lieferungZS, abholungZS, saldo, " +
+                "abholscheinNr, auftragsNrZs, auftragsNrKunde, rechnungsNrZS, buchungsinfo, lieferungZS, abholungZS, " +
+                "creationDate, createdBy, saldenbestaetigungsDatum, saldenbestaetigungsPerson, bemerkung , custName, custNr, custCaseTypeBeschreibung " +
+                " from ZSTransaction tr, CustomerCaseAndType_V cct_v " +
+                " where tr.customer2CaseAndTypeId = cct_v.customer2CaseAndTypeId "
+               // + " and tr.customer2CaseAndTypeId='9e9f4c55-5721-46dd-9d96-82ee5c957357' "
+                ;
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
@@ -58,7 +61,7 @@ public class ZSTransactionUpdate {
                 putItem(item, rs, "buchungsinfo", "STRING");
                 putItem(item, rs, "lieferungZS", "INTEGER");
                 putItem(item, rs, "abholungZS", "INTEGER");
-                putItem(item, rs, "saldo", "INTEGER");
+                //putItem(item, rs, "saldo", "INTEGER");
                 putItem(item, rs, "creationDate", "STRING");
                 putItem(item, rs, "createdBy", "STRING");
                 putItem(item, rs, "saldenbestaetigungsDatum", "STRING");
@@ -66,6 +69,7 @@ public class ZSTransactionUpdate {
                 putItem(item, rs, "bemerkung", "STRING");
                 putItem(item, rs, "bemerkung", "STRING");
                 putItem(item, rs, "custName", "STRING");
+                putItem(item, rs, "custNr", "INTEGER");
                 putItem(item, rs, "custCaseTypeBeschreibung", "STRING");
 
                 PutItemRequest request = PutItemRequest.builder()

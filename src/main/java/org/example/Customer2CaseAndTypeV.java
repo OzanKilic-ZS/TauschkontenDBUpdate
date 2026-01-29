@@ -36,7 +36,7 @@ public class Customer2CaseAndTypeV {
                 .build();
 
         String sql = "select customerCaseId, customerId, customerCaseTypeId, customer2CaseAndTypeId, " +
-                "custName, custStrasse, custPLZ, custOrt, custLand, " +
+                "custName, custNr, custStrasse, custPLZ, custOrt, custLand, " +
                 "custCaseName, custCaseTypeName, custCaseTypeBeschreibung, Notizen from CustomerCaseAndType_V";
 
         try (Connection conn = connect();
@@ -53,6 +53,7 @@ public class Customer2CaseAndTypeV {
                 item.put("id", AttributeValue.builder().s(rs.getString("customerId")).build());
                 item.put("customer2CaseAndTypeId", AttributeValue.builder().s(rs.getString("customer2CaseAndTypeId")).build());
                 item.put("name", AttributeValue.builder().s(rs.getString("custName")).build());
+                item.put("custNr", AttributeValue.builder().s(rs.getString("custNr")).build());
                 item.put("strasse", AttributeValue.builder().s(rs.getString("custStrasse")).build());
                 item.put("ort", AttributeValue.builder().s(rs.getString("custOrt")).build());
                 item.put("plz", AttributeValue.builder().s(rs.getString("custPLZ")).build());

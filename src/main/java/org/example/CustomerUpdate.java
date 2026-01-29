@@ -33,7 +33,7 @@ public class CustomerUpdate {
                 .region(software.amazon.awssdk.regions.Region.EU_CENTRAL_1)
                 .build();
 
-        String sql = "SELECT customerId, name, strasse, plz, ort, land FROM customer";
+        String sql = "SELECT customerId, customerNr, name, strasse, plz, ort, land FROM customer";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
@@ -43,6 +43,7 @@ public class CustomerUpdate {
                 Map<String, AttributeValue> item = new HashMap<>();
                 item.put("pk", AttributeValue.builder().s("Customer").build());
                 item.put("sk", AttributeValue.builder().s("customer#" + rs.getString("customerId")).build());
+                item.put("customerNr", AttributeValue.builder().s(rs.getString("customerNr")).build());
                 item.put("name", AttributeValue.builder().s(rs.getString("name")).build());
                 item.put("strasse", AttributeValue.builder().s(rs.getString("strasse")).build());
                 item.put("plz", AttributeValue.builder().s(rs.getString("plz")).build());
