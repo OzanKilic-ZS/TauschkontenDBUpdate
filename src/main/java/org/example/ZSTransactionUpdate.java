@@ -37,7 +37,8 @@ public class ZSTransactionUpdate {
         String sql = "SELECT transactionId, tr.customer2CaseAndTypeId, lieferAbholdatum, lieferscheinNr, " +
                 // "abholscheinNr, auftragsNrZs, auftragsNrKunde, rechnungsNrZS, buchungsinfo, lieferungZS, abholungZS, saldo, " +
                 "abholscheinNr, auftragsNrZs, auftragsNrKunde, rechnungsNrZS, buchungsinfo, lieferungZS, abholungZS, " +
-                "creationDate, createdBy, saldenbestaetigungsDatum, saldenbestaetigungsPerson, bemerkung , custName, custNr, custCaseTypeBeschreibung " +
+                "creationDate, createdBy, saldenbestaetigungsDatum, saldenbestaetigungsPerson, bemerkung , deleted, custName, custNr, " +
+                "custCaseTypeBeschreibung, custCaseTypeMin, custCaseTypeMax " +
                 " from ZSTransaction tr, CustomerCaseAndType_V cct_v " +
                 " where tr.customer2CaseAndTypeId = cct_v.customer2CaseAndTypeId "
                // + " and tr.customer2CaseAndTypeId='9e9f4c55-5721-46dd-9d96-82ee5c957357' "
@@ -68,10 +69,12 @@ public class ZSTransactionUpdate {
                 putItem(item, rs, "saldenbestaetigungsPerson", "STRING");
                 putItem(item, rs, "bemerkung", "STRING");
                 putItem(item, rs, "bemerkung", "STRING");
+                putItem(item, rs, "deleted", "INTEGER");
                 putItem(item, rs, "custName", "STRING");
                 putItem(item, rs, "custNr", "INTEGER");
                 putItem(item, rs, "custCaseTypeBeschreibung", "STRING");
-
+                putItem(item, rs, "custCaseTypeMin", "INTEGER");
+                putItem(item, rs, "custCaseTypeMax", "INTEGER");
                 PutItemRequest request = PutItemRequest.builder()
                         .tableName("ZSTransaction")
                         .item(item)

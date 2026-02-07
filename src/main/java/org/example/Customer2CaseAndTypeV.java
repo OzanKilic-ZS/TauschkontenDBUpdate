@@ -37,7 +37,7 @@ public class Customer2CaseAndTypeV {
 
         String sql = "select customerCaseId, customerId, customerCaseTypeId, customer2CaseAndTypeId, " +
                 "custName, custNr, custStrasse, custPLZ, custOrt, custLand, " +
-                "custCaseName, custCaseTypeName, custCaseTypeBeschreibung, Notizen from CustomerCaseAndType_V";
+                "custCaseName, custCaseTypeName, custCaseTypeBeschreibung, custCaseTypeMin, custCaseTypeMax, Notizen from CustomerCaseAndType_V";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
@@ -60,6 +60,8 @@ public class Customer2CaseAndTypeV {
                 item.put("land", AttributeValue.builder().s(rs.getString("custLand")).build());
                 item.put("caseTypeName", AttributeValue.builder().s(rs.getString("custCaseTypeName")).build());
                 item.put("caseTypeBeschreibung", AttributeValue.builder().s(rs.getString("custCaseTypeBeschreibung")).build());
+                item.put("caseTypeMin", AttributeValue.builder().s(rs.getString("custCaseTypeMin")).build());
+                item.put("caseTypeMax", AttributeValue.builder().s(rs.getString("custCaseTypeMax")).build());
                 item.put("note", AttributeValue.builder().s(rs.getString("notizen")).build());
                 item.put("noteLastChanged", AttributeValue.builder().s(LocalDateTime.now().toString()).build());
                 item.put("noteChangedBy", AttributeValue.builder().s("technik@zs-paletten.de").build());

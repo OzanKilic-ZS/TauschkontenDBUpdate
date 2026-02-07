@@ -33,7 +33,7 @@ public class CustomerCaseTypeUpdate {
                 .region(software.amazon.awssdk.regions.Region.EU_CENTRAL_1)
                 .build();
 
-        String sql = "SELECT casetypeId, name, beschreibung FROM CustomerCaseType";
+        String sql = "SELECT casetypeId, name, beschreibung, min, max FROM CustomerCaseType";
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement();
@@ -45,6 +45,8 @@ public class CustomerCaseTypeUpdate {
                 item.put("sk", AttributeValue.builder().s("caseType#" + rs.getString("casetypeId")).build());
                 item.put("name", AttributeValue.builder().s(rs.getString("name")).build());
                 item.put("beschreibung", AttributeValue.builder().s(rs.getString("beschreibung")).build());
+                item.put("min", AttributeValue.builder().s(rs.getString("min")).build());
+                item.put("max", AttributeValue.builder().s(rs.getString("max")).build());
 
                 PutItemRequest request = PutItemRequest.builder()
                         .tableName("Customer2CaseAndType")
